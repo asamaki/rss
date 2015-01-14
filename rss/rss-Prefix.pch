@@ -1,0 +1,49 @@
+//
+//  rss-Prefix.pch
+//  rss
+//
+//  Created by Ikai Masahiro on 2014/10/19.
+//  Copyright (c) 2014年 Ikai Masahiro. All rights reserved.
+//
+
+#ifndef rss_rss_Prefix_pch
+#define rss_rss_Prefix_pch
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "EFRDefine.h"
+#import "UIImageView+WebCache.h"
+#import "NADView.h"
+
+// Google Analytics
+//#import "GAI.h"
+//#import "GAIDictionaryBuilder.h"
+//#import "GAIFields.h"
+//#import "GAITrackedViewController.h"
+
+#define BACKGROUND_COLOR_DEFAULT { \
+[UIColor colorWithRed:0.100 green:0.100 blue:0.200 alpha:1.000]; \
+};
+
+// Google Analytics Macro
+#define GA_INIT_TRACKER(INTERVAL, ACCOUNT) {\
+[GAI sharedInstance].trackUncaughtExceptions = YES; \
+[GAI sharedInstance].dispatchInterval = INTERVAL; \
+[[[GAI sharedInstance] logger] setLogLevel:kGAILogLevelWarning]; \
+[[GAI sharedInstance] trackerWithTrackingId:ACCOUNT]; \
+}
+
+#define GA_TRACK_PAGE(PAGE) {\
+[[[GAI sharedInstance] defaultTracker] send:[[[GAIDictionaryBuilder createAppView] set:PAGE forKey:kGAIScreenName] build]];\
+};
+
+#define GA_TRACK_EVENT(CATEGORY,ACTION,LABEL,VALUE) {\
+[[[GAI sharedInstance] defaultTracker] send:[[GAIDictionaryBuilder createEventWithCategory:CATEGORY \
+action:ACTION \
+label:LABEL \
+value:VALUE] build]]; \
+};
+
+#define GA_TRACK_CLASS  GA_TRACK_PAGE(NSStringFromClass([self class]));
+#define GA_TRACK_METHOD GA_TRACK_EVENT(NSStringFromClass([self class]),  NSStringFromSelector(_cmd), @"", nil);
+
+#endif
